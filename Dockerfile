@@ -98,13 +98,15 @@ ENV IN_DOCKER=True \
     USE_MERCURY=True \
     MERCURY_BINARY="$NODE_DIR/node_modules/.bin/mercury-parser"
 
+ENV EXPOSED_PORT 8000
+
 # Print version for nice docker finish summary
 # RUN archivebox version
 RUN /app/bin/docker_entrypoint.sh archivebox version
 
 # Open up the interfaces to the outside world
 VOLUME "$DATA_DIR"
-EXPOSE 8000
+EXPOSE $EXPOSED_PORT
 
 ENTRYPOINT ["dumb-init", "--", "/app/bin/docker_entrypoint.sh"]
-CMD ["archivebox", "server", "0.0.0.0:8000"]
+CMD ["archivebox", "server", "$EXPOSED_PORT"]
